@@ -22,6 +22,7 @@ function makePlayers(count, existingPlayers) {
 }
 
 const INITIAL_POTIONS = { antidote: true, poison: true };
+const INITIAL_POTION_TARGETS = { antidote: null, poison: null };
 
 export const initialState = {
   phase: 'setup',
@@ -31,6 +32,7 @@ export const initialState = {
   roles: defaultRoles.map((r) => ({ ...r })),
   nextRoleId: NEXT_ROLE_ID_START,
   witchPotions: { ...INITIAL_POTIONS },
+  witchPotionTargets: { ...INITIAL_POTION_TARGETS },
 };
 
 // SEC-1 / QUALITY-3: Full schema validation on localStorage load
@@ -67,6 +69,15 @@ function validateState(parsed) {
     if (typeof wp !== 'object' || typeof wp.antidote !== 'boolean' || typeof wp.poison !== 'boolean') return null;
   } else {
     parsed.witchPotions = { ...INITIAL_POTIONS };
+  }
+
+  if (parsed.witchPotionTargets != null) {
+    const wt = parsed.witchPotionTargets;
+    if (typeof wt !== 'object') return null;
+    if (wt.antidote !== null && typeof wt.antidote !== 'string') return null;
+    if (wt.poison !== null && typeof wt.poison !== 'string') return null;
+  } else {
+    parsed.witchPotionTargets = { ...INITIAL_POTION_TARGETS };
   }
 
   return parsed;
@@ -179,7 +190,7 @@ export function gameReducer(state, action) {
         isDead: false,
         zoneId: 'zone-civilian',
       }));
-      return { ...state, phase: 'playing', players, witchPotions: { ...INITIAL_POTIONS } };
+      return { ...state, phase: 'playing', players, witchPotions: { ...INITIAL_POTIONS }, witchPotionTargets: { ...INITIAL_POTION_TARGETS } };
     }
 
     case 'MOVE_PLAYER': {
@@ -215,17 +226,34 @@ export function gameReducer(state, action) {
         isDead: false,
         zoneId: 'zone-civilian',
       }));
-      return { ...state, players, witchPotions: { ...INITIAL_POTIONS } };
+      return { ...state, players, witchPotions: { ...INITIAL_POTIONS }, witchPotionTargets: { ...INITIAL_POTION_TARGETS } };
+    }
+
+    case 'APPLY_POTION': {
+      const { potion, playerId } = action.payload;
+      if (potion !== 'antidote' && potion !== 'poison') return state;
+      if (!state.witchPotions[potion]) return state;
+      if (!state.players.some((p) => p.id === playerId)) return state;
+      return {
+        ...state,
+        witchPotions: { ...state.witchPotions, [potion]: false },
+        witchPotionTargets: { ...state.witchPotionTargets, [potion]: playerId },
+      };
     }
 
     case 'TOGGLE_WITCH_POTION': {
       const potion = action.payload;
       if (potion !== 'antidote' && potion !== 'poison') return state;
+      const willBeAvailable = !state.witchPotions[potion];
       return {
         ...state,
         witchPotions: {
           ...state.witchPotions,
-          [potion]: !state.witchPotions[potion],
+          [potion]: willBeAvailable,
+        },
+        witchPotionTargets: {
+          ...state.witchPotionTargets,
+          [potion]: willBeAvailable ? null : state.witchPotionTargets[potion],
         },
       };
     }
@@ -240,6 +268,7 @@ export function gameReducer(state, action) {
           isDead: false,
           zoneId: 'zone-civilian',
         })),
+        witchPotionTargets: { ...INITIAL_POTION_TARGETS },
       };
 
     case 'RESET_GAME':

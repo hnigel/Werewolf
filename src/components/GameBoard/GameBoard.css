@@ -163,12 +163,23 @@
 
 .potion-btn {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   padding: var(--ww-space-xs) var(--ww-space-sm);
   border-radius: var(--ww-radius-md);
   font-size: var(--ww-text-sm);
   font-weight: 600;
   cursor: pointer;
+  touch-action: none;
+  user-select: none;
   transition: all var(--ww-duration-fast) var(--ww-ease);
+}
+
+.potion-btn.potion-overlay {
+  box-shadow: var(--ww-shadow-lg);
+  z-index: 1000;
 }
 
 .potion-btn.antidote {

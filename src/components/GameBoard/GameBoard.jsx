@@ -11,6 +11,7 @@ import { useGame } from '../../context/GameContext';
 import { WITCH_ROLE_ID } from '../../constants/defaultRoles';
 import RoleZone from './RoleZone';
 import { PlayerCardOverlay } from './PlayerCard';
+import WitchPotions, { PotionOverlay } from './WitchPotions';
 import './GameBoard.css';
 
 // REACT-5: Hoist static object to module scope
@@ -21,7 +22,7 @@ const CONFIRM_MESSAGES = {
 
 export default function GameBoard() {
   const { state, dispatch } = useGame();
-  const [activeId, setActiveId] = useState(null);
+  const [activeDrag, setActiveDrag] = useState(null); // { id, type }
   const [confirmAction, setConfirmAction] = useState(null);
 
   // DND-1: Add TouchSensor alongside PointerSensor
@@ -43,30 +44,42 @@ export default function GameBoard() {
     return map;
   }, [state.players]);
 
-  const activePlayer = activeId
-    ? state.players.find((p) => p.id === activeId)
+  const activePlayer = activeDrag?.type === 'player'
+    ? state.players.find((p) => p.id === activeDrag.id)
     : null;
 
   const handleDragStart = (event) => {
-    setActiveId(event.active.id);
+    const dragType = event.active.data.current?.type || 'player';
+    setActiveDrag({ id: event.active.id, type: dragType });
   };
 
   const handleDragEnd = (event) => {
-    setActiveId(null);
+    const dragType = activeDrag?.type;
+    setActiveDrag(null);
     const { active, over } = event;
     if (!over) return;
 
-    const playerId = active.id;
-    const toZoneId = over.id;
-    const player = state.players.find((p) => p.id === playerId);
-    if (player && player.zoneId !== toZoneId) {
-      dispatch({ type: 'MOVE_PLAYER', payload: { playerId, toZoneId } });
+    if (dragType === 'potion') {
+      // Potion dropped on a player target
+      const overData = over.data.current;
+      if (overData?.type === 'playerTarget') {
+        const potion = active.data.current?.potion;
+        dispatch({ type: 'APPLY_POTION', payload: { potion, playerId: overData.playerId } });
+      }
+    } else {
+      // Player dropped on a zone
+      const playerId = active.id;
+      const toZoneId = over.id;
+      const player = state.players.find((p) => p.id === playerId);
+      if (player && player.zoneId !== toZoneId) {
+        dispatch({ type: 'MOVE_PLAYER', payload: { playerId, toZoneId } });
+      }
     }
   };
 
   // DND-3: Handle drag cancel to clear overlay
   const handleDragCancel = () => {
-    setActiveId(null);
+    setActiveDrag(null);
   };
 
   const handleConfirm = () => {
@@ -98,23 +111,6 @@ export default function GameBoard() {
         </div>
       </div>
 
-      {hasWitch && (
-        <div className="witch-potions">
-          <button
-            className={`potion-btn antidote ${!state.witchPotions.antidote ? 'used' : ''}`}
-            onClick={() => dispatch({ type: 'TOGGLE_WITCH_POTION', payload: 'antidote' })}
-          >
-            解藥{state.witchPotions.antidote ? '' : '（已使用）'}
-          </button>
-          <button
-            className={`potion-btn poison ${!state.witchPotions.poison ? 'used' : ''}`}
-            onClick={() => dispatch({ type: 'TOGGLE_WITCH_POTION', payload: 'poison' })}
-          >
-            毒藥{state.witchPotions.poison ? '' : '（已使用）'}
-          </button>
-        </div>
-      )}
-
       {confirmAction && (
         <div className="confirm-overlay">
           <div className="confirm-dialog">
@@ -137,6 +133,8 @@ export default function GameBoard() {
         onDragEnd={handleDragEnd}
         onDragCancel={handleDragCancel}
       >
+        {hasWitch && <WitchPotions />}
+
         <div className="zones-container">
           {activeRoles.map((role) => (
             <RoleZone
@@ -157,7 +155,9 @@ export default function GameBoard() {
         </div>
 
         <DragOverlay>
-          {activePlayer ? (
+          {activeDrag?.type === 'potion' ? (
+            <PotionOverlay potion={activeDrag.id.replace('potion-', '')} />
+          ) : activePlayer ? (
             <PlayerCardOverlay player={activePlayer} />
           ) : null}
         </DragOverlay>

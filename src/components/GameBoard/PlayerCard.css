@@ -42,6 +42,13 @@
   white-space: nowrap;
 }
 
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
 .death-btn {
   width: 36px;
   height: 36px;
@@ -63,4 +70,41 @@
 
 .death-btn:active {
   background: rgba(102, 126, 234, 0.2);
+}
+
+/* Potion drop target highlight */
+.player-card.potion-target-over {
+  outline: 2px solid var(--ww-brand);
+  outline-offset: -2px;
+  background: var(--ww-brand-muted);
+}
+
+/* Potion indicator on player card */
+.potion-indicator {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--ww-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  transition: background var(--ww-duration-fast) var(--ww-ease);
+}
+
+.potion-indicator.antidote {
+  background: rgba(22, 163, 74, 0.2);
+}
+
+.potion-indicator.antidote:hover {
+  background: rgba(22, 163, 74, 0.35);
+}
+
+.potion-indicator.poison {
+  background: rgba(147, 51, 234, 0.2);
+}
+
+.potion-indicator.poison:hover {
+  background: rgba(147, 51, 234, 0.35);
 }
