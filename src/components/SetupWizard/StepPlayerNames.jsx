@@ -3,6 +3,7 @@ import { useGame } from '../../context/GameContext';
 export default function StepPlayerNames() {
   const { state, dispatch } = useGame();
 
+
   const addPlayer = () => {
     dispatch({ type: 'SET_PLAYER_COUNT', payload: state.playerCount + 1 });
   };
@@ -18,7 +19,7 @@ export default function StepPlayerNames() {
 
   return (
     <div className="step">
-      <img src="/hero.webp" alt="狼人殺" className="hero-img" />
+      <img src="/hero.webp" alt="狼人殺" className="hero-img" width="800" height="436" fetchPriority="high" />
       <h1 className="app-title">狼人殺記憶助手</h1>
       <p className="app-desc">
         追蹤每位玩家的角色與存活狀態，讓你專心推理、不再忘記誰是誰。

@@ -1,8 +1,6 @@
 :root {
   /* Brand */
   --ww-brand: #667eea;
-  --ww-brand-deep: #764ba2;
-  --ww-brand-hover: #5a6fd6;
   --ww-brand-muted: rgba(102, 126, 234, 0.1);
   --ww-brand-ring: rgba(102, 126, 234, 0.2);
   --ww-gradient: linear-gradient(135deg, #667eea, #764ba2);
@@ -10,9 +8,6 @@
   /* Semantic */
   --ww-error: #dc2626;
   --ww-error-muted: rgba(220, 38, 38, 0.12);
-  --ww-warning: #d97706;
-  --ww-success: #16a34a;
-
   /* Text */
   --ww-text-primary: #f0f0f5;
   --ww-text-secondary: #b0b3c0;
@@ -28,7 +23,6 @@
   /* Border */
   --ww-border: #3a3a58;
   --ww-border-light: #2e2e4a;
-  --ww-divider: #2e2e4a;
 
   /* Overlay */
   --ww-overlay: rgba(0, 0, 0, 0.6);
@@ -149,10 +143,7 @@ input {
   transition: all var(--ww-duration-fast) var(--ww-ease);
 }
 
-.btn-secondary:hover {
-  background: var(--ww-bg-card);
-}
-
+.btn-secondary:hover,
 .btn-secondary:active {
   background: var(--ww-bg-card);
 }

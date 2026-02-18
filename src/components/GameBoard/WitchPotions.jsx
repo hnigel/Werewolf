@@ -1,9 +1,9 @@
 import { useDraggable } from '@dnd-kit/core';
-import { useGame } from '../../context/GameContext';
+import { useGameState, useGameDispatch } from '../../context/GameContext';
 import { AntidoteIcon, PoisonIcon } from './PotionIcons';
 
 function DraggablePotion({ potion, available, label }) {
-  const { dispatch } = useGame();
+  const dispatch = useGameDispatch();
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `potion-${potion}`,
     disabled: !available,
@@ -37,7 +37,7 @@ function DraggablePotion({ potion, available, label }) {
 }
 
 export default function WitchPotions() {
-  const { state } = useGame();
+  const state = useGameState();
 
   return (
     <div className="witch-potions">

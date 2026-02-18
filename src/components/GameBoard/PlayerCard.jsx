@@ -1,17 +1,16 @@
-import { useCallback } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
-import { useGame } from '../../context/GameContext';
+import { useGameState, useGameDispatch } from '../../context/GameContext';
 import { AntidoteIcon, PoisonIcon } from './PotionIcons';
 import './PlayerCard.css';
 
-function PotionIndicator({ potion, playerId }) {
-  const { dispatch } = useGame();
+function PotionIndicator({ potion }) {
+  const dispatch = useGameDispatch();
 
-  const handleRemove = (e) => {
+  const handleRemove = useCallback((e) => {
     e.stopPropagation();
-    // Toggle potion back to available (which also clears the target)
     dispatch({ type: 'TOGGLE_WITCH_POTION', payload: potion });
-  };
+  }, [dispatch, potion]);
 
   const Icon = potion === 'antidote' ? AntidoteIcon : PoisonIcon;
   const label = potion === 'antidote' ? '移除解藥' : '移除毒藥';
@@ -29,7 +28,7 @@ function PotionIndicator({ potion, playerId }) {
 }
 
 // REACT-8: Pure view component for DragOverlay (no useDraggable)
-function PlayerCardView({ player, onDeath, potionEffects, isOver }) {
+const PlayerCardView = memo(function PlayerCardView({ player, onDeath, potionEffects, isOver }) {
   return (
     <div className={`player-card ${player.isDead ? 'dead' : ''} ${isOver ? 'potion-target-over' : ''}`}>
       <span className="player-name">{player.name}</span>
@@ -51,7 +50,7 @@ function PlayerCardView({ player, onDeath, potionEffects, isOver }) {
       </div>
     </div>
   );
-}
+});
 
 export function PlayerCardOverlay({ player }) {
   return (
@@ -62,7 +61,8 @@ export function PlayerCardOverlay({ player }) {
 }
 
 export default function PlayerCard({ player }) {
-  const { state, dispatch } = useGame();
+  const state = useGameState();
+  const dispatch = useGameDispatch();
   const { attributes, listeners, setNodeRef: setDragRef, isDragging } = useDraggable({
     id: player.id,
     data: { type: 'player' },
@@ -82,15 +82,18 @@ export default function PlayerCard({ player }) {
     [setDragRef, setDropRef]
   );
 
-  const handleDeath = (e) => {
+  const handleDeath = useCallback((e) => {
     e.stopPropagation();
     dispatch({ type: 'TOGGLE_DEAD', payload: player.id });
-  };
+  }, [dispatch, player.id]);
 
   // Compute potion effects on this player
-  const potionEffects = [];
-  if (state.witchPotionTargets.antidote === player.id) potionEffects.push('antidote');
-  if (state.witchPotionTargets.poison === player.id) potionEffects.push('poison');
+  const potionEffects = useMemo(() => {
+    const effects = [];
+    if (state.witchPotionTargets.antidote === player.id) effects.push('antidote');
+    if (state.witchPotionTargets.poison === player.id) effects.push('poison');
+    return effects.length > 0 ? effects : null;
+  }, [state.witchPotionTargets, player.id]);
 
   return (
     <div
@@ -102,7 +105,7 @@ export default function PlayerCard({ player }) {
       <PlayerCardView
         player={player}
         onDeath={handleDeath}
-        potionEffects={potionEffects.length > 0 ? potionEffects : null}
+        potionEffects={potionEffects}
         isOver={isOver}
       />
     </div>

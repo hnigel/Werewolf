@@ -1,8 +1,9 @@
-import { useGame } from '../../context/GameContext';
+import { memo } from 'react';
+import { useGameDispatch } from '../../context/GameContext';
 import RoleIcon from '../GameBoard/RoleIcons';
 
-export default function RoleRow({ role }) {
-  const { dispatch } = useGame();
+export default memo(function RoleRow({ role }) {
+  const dispatch = useGameDispatch();
 
   return (
     <div className="role-row">
@@ -49,4 +50,4 @@ export default function RoleRow({ role }) {
       </div>
     </div>
   );
-}
+})

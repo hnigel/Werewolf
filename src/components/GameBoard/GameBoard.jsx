@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
   DndContext,
   DragOverlay,
@@ -31,8 +31,8 @@ export default function GameBoard() {
     useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } })
   );
 
-  const activeRoles = state.roles.filter((r) => r.count > 0);
-  const hasWitch = activeRoles.some((r) => r.id === WITCH_ROLE_ID);
+  const activeRoles = useMemo(() => state.roles.filter((r) => r.count > 0), [state.roles]);
+  const hasWitch = useMemo(() => activeRoles.some((r) => r.id === WITCH_ROLE_ID), [activeRoles]);
 
   // REACT-6: Pre-compute playersByZone map
   const playersByZone = useMemo(() => {
@@ -48,48 +48,46 @@ export default function GameBoard() {
     ? state.players.find((p) => p.id === activeDrag.id)
     : null;
 
-  const handleDragStart = (event) => {
+  const handleDragStart = useCallback((event) => {
     const dragType = event.active.data.current?.type || 'player';
     setActiveDrag({ id: event.active.id, type: dragType });
-  };
+  }, []);
 
-  const handleDragEnd = (event) => {
-    const dragType = activeDrag?.type;
-    setActiveDrag(null);
-    const { active, over } = event;
-    if (!over) return;
+  const handleDragEnd = useCallback((event) => {
+    setActiveDrag((prev) => {
+      const dragType = prev?.type;
+      const { active, over } = event;
+      if (!over) return null;
 
-    if (dragType === 'potion') {
-      // Potion dropped on a player target
-      const overData = over.data.current;
-      if (overData?.type === 'playerTarget') {
-        const potion = active.data.current?.potion;
-        dispatch({ type: 'APPLY_POTION', payload: { potion, playerId: overData.playerId } });
-      }
-    } else {
-      // Player dropped on a zone
-      const playerId = active.id;
-      const toZoneId = over.id;
-      const player = state.players.find((p) => p.id === playerId);
-      if (player && player.zoneId !== toZoneId) {
+      if (dragType === 'potion') {
+        const overData = over.data.current;
+        if (overData?.type === 'playerTarget') {
+          const potion = active.data.current?.potion;
+          dispatch({ type: 'APPLY_POTION', payload: { potion, playerId: overData.playerId } });
+        }
+      } else {
+        const playerId = active.id;
+        const toZoneId = over.id;
         dispatch({ type: 'MOVE_PLAYER', payload: { playerId, toZoneId } });
       }
-    }
-  };
+      return null;
+    });
+  }, [dispatch]);
 
-  // DND-3: Handle drag cancel to clear overlay
-  const handleDragCancel = () => {
+  const handleDragCancel = useCallback(() => {
     setActiveDrag(null);
-  };
+  }, []);
 
-  const handleConfirm = () => {
-    if (confirmAction === 'newRound') {
-      dispatch({ type: 'NEW_ROUND' });
-    } else if (confirmAction === 'reset') {
-      dispatch({ type: 'RESET_GAME_KEEP_SETTINGS' });
-    }
-    setConfirmAction(null);
-  };
+  const handleConfirm = useCallback(() => {
+    setConfirmAction((prev) => {
+      if (prev === 'newRound') {
+        dispatch({ type: 'NEW_ROUND' });
+      } else if (prev === 'reset') {
+        dispatch({ type: 'RESET_GAME_KEEP_SETTINGS' });
+      }
+      return null;
+    });
+  }, [dispatch]);
 
   return (
     <div className="game-board">

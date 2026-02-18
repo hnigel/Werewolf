@@ -48,6 +48,7 @@
 .hero-img {
   display: block;
   width: 100%;
+  height: auto;
   max-width: 320px;
   margin: 0 auto var(--ww-space-lg);
   border-radius: var(--ww-radius-xl);
@@ -171,7 +172,8 @@
               box-shadow var(--ww-duration-fast) var(--ww-ease);
 }
 
-.name-row input:focus {
+.name-row input:focus,
+.add-custom input:focus {
   outline: none;
   border-color: var(--ww-brand);
   box-shadow: 0 0 0 3px var(--ww-brand-ring);
@@ -231,6 +233,10 @@
   justify-content: center;
   flex-shrink: 0;
   transition: all var(--ww-duration-fast) var(--ww-ease);
+}
+
+.remove-player-btn:hover {
+  color: var(--ww-error);
 }
 
 .remove-player-btn:active {
@@ -313,12 +319,6 @@
   font-size: var(--ww-text-lg);
   transition: border-color var(--ww-duration-fast) var(--ww-ease),
               box-shadow var(--ww-duration-fast) var(--ww-ease);
-}
-
-.add-custom input:focus {
-  outline: none;
-  border-color: var(--ww-brand);
-  box-shadow: 0 0 0 3px var(--ww-brand-ring);
 }
 
 .role-summary {
