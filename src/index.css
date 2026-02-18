@@ -1,0 +1,108 @@
+:root {
+  /* Brand */
+  --ww-brand: #667eea;
+  --ww-brand-deep: #764ba2;
+  --ww-brand-hover: #5a6fd6;
+  --ww-brand-muted: rgba(102, 126, 234, 0.1);
+  --ww-brand-ring: rgba(102, 126, 234, 0.2);
+  --ww-gradient: linear-gradient(135deg, #667eea, #764ba2);
+
+  /* Semantic */
+  --ww-error: #dc2626;
+  --ww-error-muted: rgba(220, 38, 38, 0.12);
+  --ww-warning: #d97706;
+  --ww-success: #16a34a;
+
+  /* Text */
+  --ww-text-primary: #f0f0f5;
+  --ww-text-secondary: #b0b3c0;
+  --ww-text-muted: #7a7e8c;
+  --ww-text-faint: #555866;
+
+  /* Background */
+  --ww-bg-page: #1a1a2e;
+  --ww-bg-card: #242440;
+  --ww-bg-elevated: #2e2e4a;
+  --ww-bg-inset: #1e1e34;
+
+  /* Border */
+  --ww-border: #3a3a58;
+  --ww-border-light: #2e2e4a;
+  --ww-divider: #2e2e4a;
+
+  /* Overlay */
+  --ww-overlay: rgba(0, 0, 0, 0.6);
+
+  /* Typography */
+  --ww-text-2xl: 32px;
+  --ww-text-xl: 20px;
+  --ww-text-lg: 16px;
+  --ww-text-md: 14px;
+  --ww-text-sm: 13px;
+  --ww-text-xs: 12px;
+
+  /* Spacing (8px base) */
+  --ww-space-xs: 4px;
+  --ww-space-sm: 8px;
+  --ww-space-md: 12px;
+  --ww-space-lg: 16px;
+  --ww-space-xl: 20px;
+  --ww-space-2xl: 24px;
+  --ww-space-3xl: 32px;
+
+  /* Radius */
+  --ww-radius-xl: 16px;
+  --ww-radius-lg: 12px;
+  --ww-radius-md: 8px;
+  --ww-radius-sm: 6px;
+  --ww-radius-xs: 4px;
+  --ww-radius-full: 9999px;
+
+  /* Shadows */
+  --ww-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --ww-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --ww-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --ww-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.45);
+
+  /* Motion */
+  --ww-duration-fast: 150ms;
+  --ww-duration-normal: 250ms;
+  --ww-ease: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ww-duration-fast: 0ms;
+    --ww-duration-normal: 0ms;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+  background: var(--ww-bg-page);
+  color: var(--ww-text-primary);
+  font-size: var(--ww-text-md);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+}
+
+input {
+  font-family: inherit;
+}

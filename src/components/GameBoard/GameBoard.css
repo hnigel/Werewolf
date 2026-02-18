@@ -1,0 +1,163 @@
+.game-board {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--ww-space-lg);
+}
+
+.board-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--ww-space-xl);
+}
+
+.board-header h1 {
+  font-size: var(--ww-text-xl);
+  font-weight: 700;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: var(--ww-space-sm);
+}
+
+.btn-new-round {
+  padding: var(--ww-space-sm) var(--ww-space-lg);
+  border: 1px solid var(--ww-brand);
+  border-radius: var(--ww-radius-md);
+  background: var(--ww-brand-muted);
+  color: var(--ww-brand);
+  font-size: var(--ww-text-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--ww-duration-fast) var(--ww-ease);
+}
+
+.btn-new-round:active {
+  background: var(--ww-brand);
+  color: #fff;
+}
+
+.btn-reset {
+  padding: var(--ww-space-sm) var(--ww-space-lg);
+  border: 1px solid var(--ww-error);
+  border-radius: var(--ww-radius-md);
+  background: var(--ww-error-muted);
+  color: var(--ww-error);
+  font-size: var(--ww-text-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--ww-duration-fast) var(--ww-ease);
+}
+
+.btn-reset:active {
+  background: var(--ww-error);
+  color: #fff;
+}
+
+/* Zones */
+.zones-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ww-space-lg);
+}
+
+.role-zone {
+  border: 2px solid var(--ww-border);
+  border-radius: var(--ww-radius-lg);
+  padding: var(--ww-space-md);
+  transition: border-color var(--ww-duration-fast) var(--ww-ease),
+              background var(--ww-duration-fast) var(--ww-ease);
+  min-height: 60px;
+}
+
+.role-zone.over {
+  border-color: var(--ww-brand);
+  background: var(--ww-brand-muted);
+}
+
+.role-zone.full-warning {
+  border-color: var(--ww-error);
+  background: var(--ww-error-muted);
+}
+
+.zone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--ww-space-sm);
+}
+
+.zone-label {
+  font-size: var(--ww-text-lg);
+  font-weight: 600;
+  color: var(--ww-text-secondary);
+}
+
+.zone-capacity {
+  font-size: var(--ww-text-sm);
+  color: var(--ww-text-muted);
+}
+
+.zone-capacity.at-cap {
+  color: var(--ww-error);
+  font-weight: 700;
+}
+
+.zone-players {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ww-space-sm);
+}
+
+/* Confirm dialog */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--ww-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.confirm-dialog {
+  background: var(--ww-bg-card);
+  border: 1px solid var(--ww-border);
+  border-radius: var(--ww-radius-xl);
+  padding: var(--ww-space-2xl);
+  max-width: 320px;
+  width: 90%;
+  text-align: center;
+  box-shadow: var(--ww-shadow-xl);
+}
+
+.confirm-dialog p {
+  margin-bottom: var(--ww-space-xl);
+  font-size: var(--ww-text-lg);
+  line-height: 1.5;
+  color: var(--ww-text-secondary);
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--ww-space-md);
+}
+
+.btn-danger {
+  padding: 10px var(--ww-space-xl);
+  border: none;
+  border-radius: var(--ww-radius-md);
+  background: var(--ww-error);
+  color: #fff;
+  font-size: var(--ww-text-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--ww-duration-fast) var(--ww-ease);
+}
+
+.btn-danger:active {
+  opacity: 0.85;
+}

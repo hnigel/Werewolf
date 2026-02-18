@@ -1,0 +1,59 @@
+.player-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--ww-bg-elevated);
+  border: 1px solid var(--ww-border-light);
+  border-radius: var(--ww-radius-md);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  min-height: 44px;
+  transition: opacity var(--ww-duration-normal) var(--ww-ease),
+              background var(--ww-duration-normal) var(--ww-ease);
+}
+
+.player-card:active {
+  cursor: grabbing;
+}
+
+.player-card.dead {
+  opacity: 0.4;
+  background: var(--ww-bg-inset);
+}
+
+.player-card.dead .player-name {
+  text-decoration: line-through;
+  color: var(--ww-text-muted);
+}
+
+.player-card.overlay {
+  box-shadow: var(--ww-shadow-lg);
+  z-index: 1000;
+}
+
+.player-name {
+  font-size: var(--ww-text-md);
+  font-weight: 500;
+  color: var(--ww-text-primary);
+}
+
+.death-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: var(--ww-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background var(--ww-duration-fast) var(--ww-ease);
+}
+
+.death-btn:active {
+  background: var(--ww-brand-muted);
+}
