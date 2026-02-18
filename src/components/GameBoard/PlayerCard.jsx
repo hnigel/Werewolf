@@ -2,7 +2,35 @@ import { useDraggable } from '@dnd-kit/core';
 import { useGame } from '../../context/GameContext';
 import './PlayerCard.css';
 
-export default function PlayerCard({ player, isOverlay }) {
+// REACT-8: Pure view component for DragOverlay (no useDraggable)
+function PlayerCardView({ player, onDeath }) {
+  return (
+    <div className={`player-card ${player.isDead ? 'dead' : ''}`}>
+      <span className="player-name">{player.name}</span>
+      {onDeath && (
+        <button
+          className="death-btn"
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={onDeath}
+          aria-label={player.isDead ? `復活 ${player.name}` : `標記 ${player.name} 死亡`}
+          aria-pressed={player.isDead}
+        >
+          {player.isDead ? '💀' : '❤️'}
+        </button>
+      )}
+    </div>
+  );
+}
+
+export function PlayerCardOverlay({ player }) {
+  return (
+    <div className={`player-card overlay ${player.isDead ? 'dead' : ''}`}>
+      <span className="player-name">{player.name}</span>
+    </div>
+  );
+}
+
+export default function PlayerCard({ player }) {
   const { dispatch } = useGame();
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: player.id,
@@ -13,24 +41,14 @@ export default function PlayerCard({ player, isOverlay }) {
     dispatch({ type: 'TOGGLE_DEAD', payload: player.id });
   };
 
-  const style = isDragging && !isOverlay ? { opacity: 0.3 } : undefined;
-
   return (
     <div
-      ref={isOverlay ? undefined : setNodeRef}
-      className={`player-card ${player.isDead ? 'dead' : ''} ${isOverlay ? 'overlay' : ''}`}
-      style={style}
-      {...(isOverlay ? {} : { ...listeners, ...attributes })}
+      ref={setNodeRef}
+      style={isDragging ? { opacity: 0.3 } : undefined}
+      {...listeners}
+      {...attributes}
     >
-      <span className="player-name">{player.name}</span>
-      <button
-        className="death-btn"
-        onPointerDown={(e) => e.stopPropagation()}
-        onClick={handleDeath}
-        title={player.isDead ? '復活' : '死亡'}
-      >
-        {player.isDead ? '💀' : '❤️'}
-      </button>
+      <PlayerCardView player={player} onDeath={handleDeath} />
     </div>
   );
 }

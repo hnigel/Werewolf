@@ -29,6 +29,7 @@ export default function StepRoles() {
         <input
           type="text"
           value={customName}
+          maxLength={30}
           onChange={(e) => setCustomName(e.target.value)}
           placeholder="自訂角色名稱"
           onKeyDown={(e) => e.key === 'Enter' && handleAddCustom()}

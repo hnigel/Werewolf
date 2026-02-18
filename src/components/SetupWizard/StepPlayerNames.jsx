@@ -3,15 +3,17 @@ import { useGame } from '../../context/GameContext';
 export default function StepPlayerNames() {
   const { state, dispatch } = useGame();
 
-  const changeCount = (delta, removeIndex) => {
-    const newCount = state.playerCount + delta;
-    if (newCount < 4) return;
-    dispatch({ type: 'SET_PLAYER_COUNT', payload: newCount });
-    if (delta < 0 && removeIndex !== undefined) {
-      dispatch({ type: 'REMOVE_PLAYER', payload: removeIndex });
-    } else {
-      dispatch({ type: 'INIT_PLAYERS' });
-    }
+  const addPlayer = () => {
+    dispatch({ type: 'SET_PLAYER_COUNT', payload: state.playerCount + 1 });
+  };
+
+  const removePlayer = (index) => {
+    dispatch({ type: 'REMOVE_PLAYER', payload: index });
+  };
+
+  const decrementCount = () => {
+    if (state.playerCount <= 4) return;
+    dispatch({ type: 'SET_PLAYER_COUNT', payload: state.playerCount - 1 });
   };
 
   return (
@@ -25,15 +27,17 @@ export default function StepPlayerNames() {
       <div className="stepper compact">
         <button
           className="stepper-btn small"
-          onClick={() => changeCount(-1)}
+          onClick={decrementCount}
           disabled={state.playerCount <= 4}
+          aria-label="減少玩家"
         >
           -
         </button>
         <span className="stepper-value small-value">{state.playerCount} 人</span>
         <button
           className="stepper-btn small"
-          onClick={() => changeCount(1)}
+          onClick={addPlayer}
+          aria-label="增加玩家"
         >
           +
         </button>
@@ -41,10 +45,12 @@ export default function StepPlayerNames() {
       <div className="name-list">
         {state.players.map((player, i) => (
           <div key={player.id} className="name-row">
-            <label>{i + 1}.</label>
+            <label htmlFor={`name-${player.id}`}>{i + 1}.</label>
             <input
+              id={`name-${player.id}`}
               type="text"
               value={player.name}
+              maxLength={30}
               onFocus={(e) => e.target.select()}
               onChange={(e) =>
                 dispatch({
@@ -57,17 +63,21 @@ export default function StepPlayerNames() {
             {state.players.length > 4 && (
               <button
                 className="remove-player-btn"
-                onClick={() => changeCount(-1, i)}
-                title="移除"
+                onClick={() => removePlayer(i)}
+                aria-label={`移除 ${player.name}`}
               >
                 &times;
               </button>
             )}
           </div>
         ))}
-        <button className="add-player-btn" onClick={() => changeCount(1)}>
-          + 新增玩家
-        </button>
+        <div className="add-player-row">
+          <span className="add-spacer" />
+          <button className="add-player-btn" onClick={addPlayer}>
+            + 新增玩家
+          </button>
+          {state.players.length > 4 && <span className="add-spacer-end" />}
+        </div>
       </div>
     </div>
   );

@@ -37,6 +37,9 @@
   font-size: var(--ww-text-md);
   font-weight: 500;
   color: var(--ww-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .death-btn {
@@ -54,6 +57,10 @@
   transition: background var(--ww-duration-fast) var(--ww-ease);
 }
 
-.death-btn:active {
+.death-btn:hover {
   background: var(--ww-brand-muted);
+}
+
+.death-btn:active {
+  background: rgba(102, 126, 234, 0.2);
 }

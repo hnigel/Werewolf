@@ -16,6 +16,7 @@ export default function RoleRow({ role }) {
             })
           }
           disabled={role.count <= 0}
+          aria-label={`減少 ${role.name}`}
         >
           -
         </button>
@@ -28,6 +29,7 @@ export default function RoleRow({ role }) {
               payload: { roleId: role.id, count: role.count + 1 },
             })
           }
+          aria-label={`增加 ${role.name}`}
         >
           +
         </button>
@@ -35,7 +37,7 @@ export default function RoleRow({ role }) {
           <button
             className="remove-btn"
             onClick={() => dispatch({ type: 'REMOVE_ROLE', payload: role.id })}
-            title="移除"
+            aria-label={`移除 ${role.name}`}
           >
             &times;
           </button>

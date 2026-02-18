@@ -106,3 +106,73 @@ button {
 input {
   font-family: inherit;
 }
+
+/* CSS-1: Shared button styles */
+.btn-primary {
+  padding: var(--ww-space-md) var(--ww-space-3xl);
+  border: none;
+  border-radius: var(--ww-radius-md);
+  background: var(--ww-gradient);
+  color: #fff;
+  font-size: var(--ww-text-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--ww-duration-fast) var(--ww-ease);
+  box-shadow: var(--ww-shadow-sm);
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-primary:active {
+  opacity: 0.85;
+}
+
+.btn-primary:disabled {
+  background: var(--ww-bg-elevated);
+  color: var(--ww-text-faint);
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 1;
+}
+
+.btn-secondary {
+  padding: var(--ww-space-md) var(--ww-space-2xl);
+  border: 1px solid var(--ww-border);
+  border-radius: var(--ww-radius-md);
+  background: var(--ww-bg-elevated);
+  color: var(--ww-text-secondary);
+  font-size: var(--ww-text-lg);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--ww-duration-fast) var(--ww-ease);
+}
+
+.btn-secondary:hover {
+  background: var(--ww-bg-card);
+}
+
+.btn-secondary:active {
+  background: var(--ww-bg-card);
+}
+
+.btn-danger {
+  padding: 10px var(--ww-space-xl);
+  border: none;
+  border-radius: var(--ww-radius-md);
+  background: var(--ww-error);
+  color: #fff;
+  font-size: var(--ww-text-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--ww-duration-fast) var(--ww-ease);
+}
+
+.btn-danger:hover {
+  opacity: 0.9;
+}
+
+.btn-danger:active {
+  opacity: 0.85;
+}
