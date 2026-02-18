@@ -31,6 +31,7 @@ export default function GameBoard() {
   );
 
   const activeRoles = state.roles.filter((r) => r.count > 0);
+  const hasWitch = activeRoles.some((r) => r.id === WITCH_ROLE_ID);
 
   // REACT-6: Pre-compute playersByZone map
   const playersByZone = useMemo(() => {
@@ -97,6 +98,23 @@ export default function GameBoard() {
         </div>
       </div>
 
+      {hasWitch && (
+        <div className="witch-potions">
+          <button
+            className={`potion-btn antidote ${!state.witchPotions.antidote ? 'used' : ''}`}
+            onClick={() => dispatch({ type: 'TOGGLE_WITCH_POTION', payload: 'antidote' })}
+          >
+            解藥{state.witchPotions.antidote ? '' : '（已使用）'}
+          </button>
+          <button
+            className={`potion-btn poison ${!state.witchPotions.poison ? 'used' : ''}`}
+            onClick={() => dispatch({ type: 'TOGGLE_WITCH_POTION', payload: 'poison' })}
+          >
+            毒藥{state.witchPotions.poison ? '' : '（已使用）'}
+          </button>
+        </div>
+      )}
+
       {confirmAction && (
         <div className="confirm-overlay">
           <div className="confirm-dialog">
@@ -127,11 +145,6 @@ export default function GameBoard() {
               label={role.name}
               capacity={role.count}
               players={playersByZone[`zone-${role.id}`] || []}
-              {...(role.id === WITCH_ROLE_ID && {
-                potions: state.witchPotions,
-                onTogglePotion: (potion) =>
-                  dispatch({ type: 'TOGGLE_WITCH_POTION', payload: potion }),
-              })}
             />
           ))}
 

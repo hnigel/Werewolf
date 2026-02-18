@@ -158,7 +158,7 @@
 .witch-potions {
   display: flex;
   gap: var(--ww-space-sm);
-  margin-bottom: var(--ww-space-sm);
+  margin-bottom: var(--ww-space-md);
 }
 
 .potion-btn {

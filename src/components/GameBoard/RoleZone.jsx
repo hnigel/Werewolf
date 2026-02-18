@@ -1,7 +1,7 @@
 import { useDroppable } from '@dnd-kit/core';
 import PlayerCard from './PlayerCard';
 
-export default function RoleZone({ zoneId, label, capacity, players, potions, onTogglePotion }) {
+export default function RoleZone({ zoneId, label, capacity, players }) {
   const { setNodeRef, isOver } = useDroppable({ id: zoneId });
 
   const currentCount = players.length;
@@ -23,22 +23,6 @@ export default function RoleZone({ zoneId, label, capacity, players, potions, on
           </span>
         )}
       </div>
-      {potions && (
-        <div className="witch-potions">
-          <button
-            className={`potion-btn antidote ${!potions.antidote ? 'used' : ''}`}
-            onClick={() => onTogglePotion('antidote')}
-          >
-            解藥{potions.antidote ? '' : '（已使用）'}
-          </button>
-          <button
-            className={`potion-btn poison ${!potions.poison ? 'used' : ''}`}
-            onClick={() => onTogglePotion('poison')}
-          >
-            毒藥{potions.poison ? '' : '（已使用）'}
-          </button>
-        </div>
-      )}
       <div className="zone-players">
         {players.map((p) => (
           <PlayerCard key={p.id} player={p} />
