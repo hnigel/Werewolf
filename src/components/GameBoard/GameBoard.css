@@ -98,6 +98,9 @@
 }
 
 .zone-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: var(--ww-text-lg);
   font-weight: 600;
   color: var(--ww-text-secondary);
@@ -162,14 +165,16 @@
 }
 
 .potion-btn {
-  flex: 1;
+  width: 64px;
+  height: 64px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: var(--ww-space-xs) var(--ww-space-sm);
+  gap: 4px;
+  padding: 0;
   border-radius: var(--ww-radius-md);
-  font-size: var(--ww-text-sm);
+  font-size: var(--ww-text-xs, 11px);
   font-weight: 600;
   cursor: pointer;
   touch-action: none;

@@ -30,8 +30,8 @@ function DraggablePotion({ potion, available, label }) {
       }}
       {...(available ? attributes : {})}
     >
-      <Icon size={18} />
-      <span>{label}{available ? '' : '（已使用）'}</span>
+      <Icon size={24} />
+      <span>{available ? label : '已使用'}</span>
     </button>
   );
 }
@@ -61,7 +61,7 @@ export function PotionOverlay({ potion }) {
 
   return (
     <div className={`potion-btn ${potion} potion-overlay`}>
-      <Icon size={18} />
+      <Icon size={24} />
       <span>{label}</span>
     </div>
   );

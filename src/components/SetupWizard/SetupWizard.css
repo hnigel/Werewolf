@@ -257,6 +257,9 @@
 }
 
 .role-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: var(--ww-text-lg);
   font-weight: 500;
 }

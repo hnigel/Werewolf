@@ -1,11 +1,15 @@
 import { useGame } from '../../context/GameContext';
+import RoleIcon from '../GameBoard/RoleIcons';
 
 export default function RoleRow({ role }) {
   const { dispatch } = useGame();
 
   return (
     <div className="role-row">
-      <span className="role-name">{role.name}</span>
+      <span className="role-name">
+        <RoleIcon roleId={role.id} size={18} />
+        {role.name}
+      </span>
       <div className="role-controls">
         <button
           className="stepper-btn small"

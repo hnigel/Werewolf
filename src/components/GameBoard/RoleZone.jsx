@@ -1,5 +1,6 @@
 import { useDroppable } from '@dnd-kit/core';
 import PlayerCard from './PlayerCard';
+import RoleIcon, { CivilianIcon } from './RoleIcons';
 
 export default function RoleZone({ zoneId, label, capacity, players }) {
   const { setNodeRef, isOver } = useDroppable({ id: zoneId });
@@ -10,13 +11,18 @@ export default function RoleZone({ zoneId, label, capacity, players }) {
   const showOver = isOver && !isFull;
   const showWarning = isOver && isFull;
 
+  const roleId = zoneId === 'zone-civilian' ? null : Number(zoneId.replace('zone-', ''));
+
   return (
     <div
       ref={setNodeRef}
       className={`role-zone ${showOver ? 'over' : ''} ${showWarning ? 'full-warning' : ''}`}
     >
       <div className="zone-header">
-        <span className="zone-label">{label}</span>
+        <span className="zone-label">
+          {roleId != null ? <RoleIcon roleId={roleId} size={20} /> : <CivilianIcon size={20} />}
+          {label}
+        </span>
         {capacity !== null && (
           <span className={`zone-capacity ${isFull ? 'at-cap' : ''}`}>
             {currentCount}/{capacity}
